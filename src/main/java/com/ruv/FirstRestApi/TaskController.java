@@ -9,40 +9,36 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
-    private final TaskRepository repo;
-    TaskController(TaskRepository repo){
-        this.repo = repo;
+    private final TaskServices service;
+    TaskController(TaskServices service){
+        this.service = service;
     }
 
     @GetMapping
-    public List<Task> getAll(@RequestParam(required = false) String status) {
-        return status == null ? repo.findAll() : repo.findByStatus(status);
+    public List<Task> getAll() {
+        return service.getAllTasks();
     }
 
     @GetMapping("/{id}")
     public Task getOne(@PathVariable Long id){
-        return repo.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return service.getTaskById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Task create(@RequestBody Task task){
-        return repo.save(task);
+        return service.createTask(task);
     }
 
 
     @PutMapping("/{id}")
     public Task update(@PathVariable Long id , @RequestBody Task updated){
-        Task task = getOne(id);
-        task.setTitle(updated.getTitle());
-        task.setStatus(updated.getStatus());
-        task.setDueDate(updated.getDueDate());
-        return repo.save(task);
+        return service.updateTask(id,updated);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
-        repo.deleteById(id);
+        service.deleteTask(id);
     }
 }
