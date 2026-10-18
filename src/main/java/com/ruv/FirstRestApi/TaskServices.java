@@ -2,9 +2,11 @@
 package com.ruv.FirstRestApi;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+@Service 
 public class TaskServices {
-    private final TaskService repo ;
-    TaskServices(TaskService repo){
+    private final TaskRepository repo ;
+    TaskServices(TaskRepository repo){
         this.repo = repo;
     }
     public List<Task> getAllTasks(){
