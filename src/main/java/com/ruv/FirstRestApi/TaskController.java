@@ -2,6 +2,7 @@ package com.ruv.FirstRestApi;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +27,13 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Task create(@RequestBody Task task){
+    public Task create( @Validated @RequestBody Task task){
         return service.createTask(task);
     }
 
 
     @PutMapping("/{id}")
-    public Task update(@PathVariable Long id , @RequestBody Task updated){
+    public Task update(@PathVariable Long id , @Validated  @RequestBody Task updated){
         return service.updateTask(id,updated);
     }
 
